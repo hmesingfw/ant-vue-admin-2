@@ -5,11 +5,11 @@
                 <a-button>
                     <a-icon type="search" />搜索
                 </a-button>
-                <slot name="add">
+                <template slot="add">
                     <a-button @click="EditInfo()">
                         <a-icon type="plus" />新增
                     </a-button>
-                </slot>
+                </template>
                 <slot name="del">
                     <a-button plain @click="DeleteInfo()">
                         <a-icon type="delete" style="color:#F56C6C" />&nbsp;批量删除
