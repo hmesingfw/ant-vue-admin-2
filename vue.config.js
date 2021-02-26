@@ -35,6 +35,7 @@ const assetsCDN = {
 }
 
 module.exports = {
+	lintOnSave: false,
   devServer: {
     open: true,
     overlay: {

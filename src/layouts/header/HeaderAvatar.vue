@@ -2,9 +2,9 @@
     <a-dropdown>
         <div class="header-avatar" style="cursor: pointer">
             <a-avatar class="avatar" size="small" shape="circle" :src="user.avatar" />
-            <span class="name">{{user.name}}, {{ time.h }}好！</span>
+            <span class="name">{{ user.name }}, {{ time.h }}好！</span>
         </div>
-        <a-menu :class="['avatar-menu']" slot="overlay">
+        <a-menu :class="['avatar-menu']">
             <a-menu-item>
                 <a-icon type="user" />
                 <span>个人中心</span>

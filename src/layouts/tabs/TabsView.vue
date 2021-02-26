@@ -1,6 +1,6 @@
 <template>
     <admin-layout>
-        <contextmenu v-if="false" :itemList="menuItemList" :visible.sync="menuVisible" @select="onMenuSelect" />
+        <contextmenu v-if="false" :item-list="menuItemList" v-model:visible="menuVisible" @select="onMenuSelect" />
         <tabs-head v-if="multiPage" :active="activePage" :page-list="pageList" @change="changePage" @close="remove" @refresh="refresh" @contextmenu="onContextmenu" />
         <div :class="['tabs-view-content', layout, pageWidth]" :style="`margin-top: ${multiPage ? -24 : 0}px`">
             <page-toggle-transition :disabled="animate.disabled" :animate="animate.name" :direction="animate.direction">
@@ -68,7 +68,7 @@ export default {
     mounted() {
         this.correctPageMinHeight(-this.tabsOffset)
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.removeListener()
         this.correctPageMinHeight(this.tabsOffset)
     },
@@ -111,7 +111,7 @@ export default {
             if (this.pageList.length === 1) {
                 return this.$message.warning(this.$t('warn'))
             }
-            //清除缓存
+            // 清除缓存
             let index = this.pageList.findIndex(item => item.fullPath === key)
             this.clearCaches = this.pageList.splice(index, 1).map(page => page.cachedKey)
             if (next) {
@@ -127,10 +127,10 @@ export default {
             page.loading = true
             this.clearCache(page)
             if (key === this.activePage) {
-                this.reloadContent(() => page.loading = false)
+                this.reloadContent(() => { page.loading = false })
             } else {
                 // 其实刷新很快，加这个延迟纯粹为了 loading 状态多展示一会儿，让用户感知刷新这一过程
-                setTimeout(() => page.loading = false, 500)
+                setTimeout(() => { page.loading = false }, 500)
             }
         },
         onContextmenu(pageKey, e) {

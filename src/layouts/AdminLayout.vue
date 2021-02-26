@@ -1,19 +1,19 @@
 <template>
     <a-layout :class="['admin-layout', 'beauty-scroll']">
         <drawer v-if="isMobile" v-model="drawerOpen">
-            <side-menu :theme="theme.mode" :menuData="menuData" :collapsed="false" :collapsible="false" @menuSelect="onMenuSelect" />
+            <side-menu :theme="theme.mode" :menu-data="menuData" :collapsed="false" :collapsible="false" @menuSelect="onMenuSelect" />
         </drawer>
         <side-menu
             :class="[fixedSideBar ? 'fixed-side' : '']"
             :theme="theme.mode"
             v-else-if="layout === 'side' || layout === 'mix'"
-            :menuData="sideMenuData"
+            :menu-data="sideMenuData"
             :collapsed="collapsed"
             :collapsible="true"
         />
         <div v-if="fixedSideBar && !isMobile" :style="`width: ${sideMenuWidth}; min-width: ${sideMenuWidth};max-width: ${sideMenuWidth};`" class="virtual-side"></div>
         <drawer v-if="!hideSetting" v-model="showSetting" placement="right">
-            <div class="setting" slot="handler">
+            <div class="setting">
                 <a-icon :type="showSetting ? 'close' : 'setting'" />
             </div>
             <setting />
@@ -22,7 +22,7 @@
             <admin-header
                 :class="[{'fixed-tabs': fixedTabs, 'fixed-header': fixedHeader, 'multi-page': multiPage}]"
                 :style="headerStyle"
-                :menuData="headMenuData"
+                :menu-data="headMenuData"
                 :collapsed="collapsed"
                 @toggleCollapse="toggleCollapse"
             />
@@ -86,8 +86,8 @@ export default {
             return this.collapsed ? '80px' : '256px'
         },
         headerStyle() {
-            let width = (this.fixedHeader && this.layout !== 'head' && !this.isMobile) ? `calc(100% - ${this.sideMenuWidth})` : '100%'
-            let position = this.fixedHeader ? 'fixed' : 'static'
+            const width = (this.fixedHeader && this.layout !== 'head' && !this.isMobile) ? `calc(100% - ${this.sideMenuWidth})` : '100%'
+            const position = this.fixedHeader ? 'fixed' : 'static'
             return `width: ${width}; position: ${position};`
         },
         headMenuData() {
@@ -112,7 +112,7 @@ export default {
                 let matched = route.matched
                 matched = matched.slice(0, matched.length - 1)
                 const { firstMenu } = this
-                for (let menu of firstMenu) {
+                for (const menu of firstMenu) {
                     if (matched.findIndex(item => item.path === menu.fullPath) !== -1) {
                         this.setActivatedFirst(menu.fullPath)
                         break
@@ -125,7 +125,7 @@ export default {
         this.correctPageMinHeight(this.minHeight - 24)
         this.setActivated(this.$route)
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.correctPageMinHeight(-this.minHeight + 24)
     }
 }

@@ -1,11 +1,11 @@
 import routerMap from '@/router/async/router.map'
 import { mergeI18nFromRoutes } from '@/utils/i18n'
-import Router from 'vue-router'
+// import { createRouter, createWebHistory } from 'vue-router'
 import deepMerge from 'deepmerge'
 import basicOptions from '@/router/async/config.async'
 
-//应用配置
-let appOptions = {
+// 应用配置
+const appOptions = {
     router: undefined,
     i18n: undefined,
     store: undefined
@@ -28,10 +28,10 @@ function setAppOptions(options) {
  * @param routerMap 本地路由组件注册配置
  */
 function parseRoutes(routesConfig, routerMap) {
-    let routes = []
+    const routes = []
     routesConfig.forEach(item => {
         // 获取注册在 routerMap 中的 router，初始化 routeCfg
-        let router = undefined, routeCfg = {}
+        let router; let routeCfg = {}
         if (typeof item === 'string') {
             router = routerMap[item]
             routeCfg = { path: router.path || item, router: item }
@@ -72,8 +72,8 @@ function parseRoutes(routesConfig, routerMap) {
  * @param routesConfig {RouteConfig[]} 路由配置
  */
 function loadRoutes(routesConfig) {
-    //兼容 0.6.1 以下版本
-    /*************** 兼容 version < v0.6.1 *****************/
+    // 兼容 0.6.1 以下版本
+    /** ************* 兼容 version < v0.6.1 *****************/
     if (arguments.length > 0) {
         const arg0 = arguments[0]
         if (arg0.router || arg0.i18n || arg0.store) {
@@ -82,7 +82,7 @@ function loadRoutes(routesConfig) {
             console.error('方法签名 loadRoutes({router, store, i18n}, routesConfig) 的用法已过时, 请使用新的方法签名 loadRoutes(routesConfig)。')
         }
     }
-    /*************** 兼容 version < v0.6.1 *****************/
+    /** ************* 兼容 version < v0.6.1 *****************/
 
     // 应用配置
     const { router, store, i18n } = appOptions
@@ -101,7 +101,9 @@ function loadRoutes(routesConfig) {
             const finalRoutes = mergeRoutes(basicOptions.routes, routes)
             formatRoutes(finalRoutes)
             router.options = { ...router.options, routes: finalRoutes }
-            router.matcher = new Router({ ...router.options, routes: [] }).matcher
+            console.log(router.options);
+            // router.matcher = new Router({ ...router.options, routes: [] }).matcher
+
             router.addRoutes(finalRoutes)
         }
     }
@@ -123,8 +125,8 @@ function loadRoutes(routesConfig) {
  */
 function mergeRoutes(target, source) {
     const routesMap = {}
-    target.forEach(item => routesMap[item.path] = item)
-    source.forEach(item => routesMap[item.path] = item)
+    target.forEach(item => { routesMap[item.path] = item })
+    source.forEach(item => { routesMap[item.path] = item })
     return Object.values(routesMap)
 }
 

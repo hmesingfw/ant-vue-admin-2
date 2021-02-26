@@ -16,8 +16,7 @@ export default {
                 this.params.map(item => {
                     if (!item || !item.status) return;
 
-                    return <a-table-column title={item.title} customRender={this.formatter.bind(this, item)} {...item.attr}  >
-                    </a-table-column>
+                    return <a-table-column title={item.title} customRender={this.formatter.bind(this, item)} {...item.attr}>                    </a-table-column>
                 })
             }
         </a-table>

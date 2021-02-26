@@ -1,8 +1,8 @@
 <template>
     <div class="side-setting">
         <setting-item>
-            <a-button @click="saveSetting" type="primary" icon="save">{{$t('save')}}</a-button>
-            <a-button @click="resetSetting" type="dashed" icon="redo" style="float: right">{{$t('reset')}}</a-button>
+            <a-button @click="saveSetting" type="primary" icon="save">{{ $t('save') }}</a-button>
+            <a-button @click="resetSetting" type="dashed" icon="redo" style="float: right">{{ $t('reset') }}</a-button>
         </setting-item>
         <setting-item :title="$t('theme.title')">
             <img-checkbox-group @change="values => setTheme({...theme, mode: values[0]})" :default-values="[theme.mode]">
@@ -12,7 +12,7 @@
             </img-checkbox-group>
         </setting-item>
         <setting-item :title="$t('theme.color')">
-            <color-checkbox-group @change="(values, colors) => setTheme({...theme, color: colors[0]})" :defaultValues="[palettes.indexOf(theme.color)]" :multiple="false">
+            <color-checkbox-group @change="(values, colors) => setTheme({...theme, color: colors[0]})" :default-values="[palettes.indexOf(theme.color)]" :multiple="false">
                 <color-checkbox v-for="(color, index) in palettes" :key="index" :color="color" :value="index" />
             </color-checkbox-group>
         </setting-item>
@@ -27,19 +27,19 @@
         <setting-item>
             <a-list :split="false">
                 <a-list-item>
-                    {{$t('navigate.content.title')}}
-                    <a-select :getPopupContainer="getPopupContainer" :value="pageWidth" @change="setPageWidth" class="select-item" size="small" slot="actions">
-                        <a-select-option value="fluid">{{$t('navigate.content.fluid')}}</a-select-option>
-                        <a-select-option value="fixed">{{$t('navigate.content.fixed')}}</a-select-option>
+                    {{ $t('navigate.content.title') }}
+                    <a-select :get-popup-container="getPopupContainer" :value="pageWidth" @change="setPageWidth" class="select-item" size="small">
+                        <a-select-option value="fluid">{{ $t('navigate.content.fluid') }}</a-select-option>
+                        <a-select-option value="fixed">{{ $t('navigate.content.fixed') }}</a-select-option>
                     </a-select>
                 </a-list-item>
                 <a-list-item>
-                    {{$t('navigate.fixedHeader')}}
-                    <a-switch :checked="fixedHeader" slot="actions" size="small" @change="setFixedHeader" />
+                    {{ $t('navigate.fixedHeader') }}
+                    <a-switch :checked="fixedHeader" size="small" @change="setFixedHeader" />
                 </a-list-item>
                 <a-list-item>
-                    {{$t('navigate.fixedSideBar')}}
-                    <a-switch :checked="fixedSideBar" slot="actions" size="small" @change="setFixedSideBar" />
+                    {{ $t('navigate.fixedSideBar') }}
+                    <a-switch :checked="fixedSideBar" size="small" @change="setFixedSideBar" />
                 </a-list-item>
             </a-list>
         </setting-item>
@@ -47,16 +47,16 @@
         <setting-item :title="$t('other.title')">
             <a-list :split="false">
                 <a-list-item>
-                    {{$t('other.weekMode')}}
-                    <a-switch :checked="weekMode" slot="actions" size="small" @change="setWeekMode" />
+                    {{ $t('other.weekMode') }}
+                    <a-switch :checked="weekMode" size="small" @change="setWeekMode" />
                 </a-list-item>
                 <a-list-item>
-                    {{$t('other.multiPages')}}
-                    <a-switch :checked="multiPage" slot="actions" size="small" @change="setMultiPage" />
+                    {{ $t('other.multiPages') }}
+                    <a-switch :checked="multiPage" size="small" @change="setMultiPage" />
                 </a-list-item>
                 <a-list-item>
-                    {{$t('other.hideSetting')}}
-                    <a-switch :checked="hideSetting" slot="actions" size="small" @change="setHideSetting" />
+                    {{ $t('other.hideSetting') }}
+                    <a-switch :checked="hideSetting" size="small" @change="setHideSetting" />
                 </a-list-item>
             </a-list>
         </setting-item>
@@ -64,32 +64,25 @@
         <setting-item :title="$t('animate.title')">
             <a-list :split="false">
                 <a-list-item>
-                    {{$t('animate.disable')}}
-                    <a-switch :checked="animate.disabled" slot="actions" size="small" @change="val => setAnimate({...animate, disabled: val})" />
+                    {{ $t('animate.disable') }}
+                    <a-switch :checked="animate.disabled" size="small" @change="val => setAnimate({...animate, disabled: val})" />
                 </a-list-item>
                 <a-list-item>
-                    {{$t('animate.effect')}}
-                    <a-select :value="animate.name" :getPopupContainer="getPopupContainer" @change="val => setAnimate({...animate, name: val})" class="select-item" size="small" slot="actions">
-                        <a-select-option :key="index" :value="item.name" v-for="(item, index) in animates">{{item.alias}}</a-select-option>
+                    {{ $t('animate.effect') }}
+                    <a-select :value="animate.name" :get-popup-container="getPopupContainer" @change="val => setAnimate({...animate, name: val})" class="select-item" size="small">
+                        <a-select-option :key="index" :value="item.name" v-for="(item, index) in animates">{{ item.alias }}</a-select-option>
                     </a-select>
                 </a-list-item>
                 <a-list-item>
-                    {{$t('animate.direction')}}
-                    <a-select
-                        :value="animate.direction"
-                        :getPopupContainer="getPopupContainer"
-                        @change="val => setAnimate({...animate, direction: val})"
-                        class="select-item"
-                        size="small"
-                        slot="actions"
-                    >
-                        <a-select-option :key="index" :value="item" v-for="(item, index) in directions">{{item}}</a-select-option>
+                    {{ $t('animate.direction') }}
+                    <a-select :value="animate.direction" :get-popup-container="getPopupContainer" @change="val => setAnimate({...animate, direction: val})" class="select-item" size="small">
+                        <a-select-option :key="index" :value="item" v-for="(item, index) in directions">{{ item }}</a-select-option>
                     </a-select>
                 </a-list-item>
             </a-list>
         </setting-item>
         <a-alert v-if="isDev" style="max-width: 240px; margin: -16px 0 8px; word-break: break-all" type="warning" :message="$t('alert')"></a-alert>
-        <a-button v-if="isDev" id="copyBtn" :data-clipboard-text="copyConfig" @click="copyCode" style="width: 100%" icon="copy">{{$t('copy')}}</a-button>
+        <a-button v-if="isDev" id="copyBtn" :data-clipboard-text="copyConfig" @click="copyCode" style="width: 100%" icon="copy">{{ $t('copy') }}</a-button>
     </div>
 </template>
 
@@ -132,11 +125,11 @@ export default {
             return this.$el.parentNode
         },
         copyCode() {
-            let config = this.extractConfig(false)
+            const config = this.extractConfig(false)
             this.copyConfig = `// 自定义配置，参考 ./default/setting.config.js，需要自定义的属性在这里配置即可
       module.exports = ${formatConfig(config)}
       `
-            let clipboard = new Clipboard('#copyBtn')
+            const clipboard = new Clipboard('#copyBtn')
             clipboard.on('success', () => {
                 this.$message.success(`复制成功，覆盖文件 src/config/config.js 然后重启项目即可生效`).then(() => {
                     const localConfig = localStorage.getItem(process.env.VUE_APP_SETTING_KEY)
@@ -163,13 +156,13 @@ export default {
                 }
             })
         },
-        //提取配置
+        // 提取配置
         extractConfig(local = false) {
-            let config = {}
-            let mySetting = this.$store.state.setting
-            let dftSetting = local ? deepMerge(setting, sysConfig) : setting
+            const config = {}
+            const mySetting = this.$store.state.setting
+            const dftSetting = local ? deepMerge(setting, sysConfig) : setting
             Object.keys(mySetting).forEach(key => {
-                const dftValue = dftSetting[key], myValue = mySetting[key]
+                const dftValue = dftSetting[key]; const myValue = mySetting[key]
                 if (dftValue != undefined && !fastEqual(dftValue, myValue)) {
                     config[key] = myValue
                 }

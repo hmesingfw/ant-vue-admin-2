@@ -5,11 +5,11 @@
                 <a-button>
                     <a-icon type="search" />搜索
                 </a-button>
-                <template slot="add">
+                <slot name="add">
                     <a-button @click="EditInfo()">
                         <a-icon type="plus" />新增
                     </a-button>
-                </template>
+                </slot>
                 <slot name="del">
                     <a-button plain @click="DeleteInfo()">
                         <a-icon type="delete" style="color:#F56C6C" />&nbsp;批量删除
@@ -24,7 +24,7 @@
                 </a-button>
 
                 <a-popover placement="bottom" :width="240" trigger="click" popper-class="h-table-col-settings">
-                    <template slot="content">
+                    <template #content>
                         <a-row type="flex" justify="space-between" align="middle" class="h-table-col-settings__header">
                             <div>
                                 <a-checkbox v-model="settingCheckAll" :indeterminate="isIndeterminate" @change="ChangeColSettingAll">列展示</a-checkbox>
@@ -91,12 +91,12 @@ export default {
             pageData: { total: 0, page: 1, size: 10 }, // 分页参数
             tableLoading: false,
             tableData: [],
-            tableStatus: true, // 表格if 
+            tableStatus: true, // 表格if
             colSettings: [], // 列的设置参数
             isIndeterminate: false, // 列的设置参数,  用以表示 checkbox 的不确定状态，一般用于实现全选的效果
             settingCheckAll: true, // 列的设置参数, 多选状态
             setupTableAttrs: {
-                rowKey: "id",
+                rowKey: 'id',
                 pagination: false,
             },
         }

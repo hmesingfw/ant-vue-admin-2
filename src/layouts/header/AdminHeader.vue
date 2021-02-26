@@ -3,7 +3,7 @@
         <div :class="['admin-header-wide', layout, pageWidth]">
             <router-link v-if="isMobile || layout === 'head'" to="/" :class="['logo', isMobile ? null : 'pc', headerTheme]">
                 <img width="32" src="@/assets/img/logo.png" />
-                <h1 v-if="!isMobile">{{systemName}}</h1>
+                <h1 v-if="!isMobile">{{ systemName }}</h1>
             </router-link>
             <a-divider v-if="isMobile" type="vertical" />
             <a-icon v-if="layout !== 'head'" class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="toggleCollapse" />
@@ -22,10 +22,10 @@
                 <a-dropdown class="lang header-item">
                     <div>
                         <a-icon type="global" />
-                        {{langAlias}}
+                        {{ langAlias }}
                     </div>
-                    <a-menu @click="val => setLang(val.key)" :selected-keys="[lang]" slot="overlay">
-                        <a-menu-item v-for=" lang in langList" :key="lang.key">{{lang.key.toLowerCase() + ' ' + lang.name}}</a-menu-item>
+                    <a-menu @click="val => setLang(val.key)" :selected-keys="[lang]">
+                        <a-menu-item v-for=" lang in langList" :key="lang.key">{{ lang.key.toLowerCase() + ' ' + lang.name }}</a-menu-item>
                     </a-menu>
                 </a-dropdown>
             </div>
@@ -63,7 +63,7 @@ export default {
             return this.theme.mode
         },
         langAlias() {
-            let lang = this.langList.find(item => item.key == this.lang)
+            const lang = this.langList.find(item => item.key == this.lang)
             return lang.alias
         },
         menuWidth() {

@@ -25,6 +25,7 @@ module.exports = {
         "vue/order-in-components": "off",
         "vue/require-prop-types": "off",
         "vue/no-v-model-argument": "off",
+        "vue/html-self-closing": "off",
         'accessor-pairs': 2,
         'arrow-spacing': [2, {
             'before': true,

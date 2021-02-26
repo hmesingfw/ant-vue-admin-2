@@ -1,10 +1,10 @@
 <template>
     <page-layout :avatar="currUser.avatar">
-        <div slot="headerContent">
-            <div class="title">下午好，{{currUser.name}}，休息一会儿吧</div>
-            <div>{{currUser.position[lang]}}</div>
-        </div>
-        <template slot="extra">
+        <template #headerContent>
+            <div class="title">下午好，{{ currUser.name }}，休息一会儿吧</div>
+            <div>{{ currUser.position[lang] }}</div>
+        </template>
+        <template #extra>
             <head-info class="split-right" title="项目数" content="56" />
             <head-info class="split-right" title="团队排名" content="8/24" />
             <head-info class="split-right" title="项目访问" content="2,223" />

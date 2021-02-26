@@ -1,20 +1,20 @@
 <template>
     <div class="page-layout">
         <page-header ref="pageHeader" :style="`margin-top: ${multiPage ? 0 : -24}px`" :breadcrumb="breadcrumb" :title="pageTitle" :logo="logo" :avatar="avatar">
-            <slot name="action" slot="action"></slot>
-            <slot slot="content" name="headerContent"></slot>
-            <div slot="content" v-if="!this.$slots.headerContent && desc">
-                <p>{{desc}}</p>
-                <div v-if="this.linkList" class="link">
-                    <template v-for="(link, index) in linkList">
-                        <a :key="index" :href="link.href">
+            <slot name="action"></slot>
+            <slot name="headerContent"></slot>
+            <div v-if="!$slots.headerContent && desc">
+                <p>{{ desc }}</p>
+                <div v-if="linkList" class="link">
+                    <span v-for="(link, index) in linkList" :key="index">
+                        <a :href="link.href">
                             <a-icon :type="link.icon" />
-                            {{link.title}}
+                            {{ link.title }}
                         </a>
-                    </template>
+                    </span>
                 </div>
             </div>
-            <slot v-if="this.$slots.extra" slot="extra" name="extra"></slot>
+            <slot v-if="this.$slots.extra" name="extra"></slot>
         </page-header>
         <div ref="page" :class="['page-content', layout, pageWidth]">
             <slot></slot>
@@ -59,13 +59,13 @@ export default {
     created() {
         this.page = this.$route.meta.page
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.updatePageHeight(0)
     },
     computed: {
         ...mapState('setting', ['layout', 'multiPage', 'pageMinHeight', 'pageWidth', 'customTitles']),
         pageTitle() {
-            let pageTitle = this.page && this.page.title
+            const pageTitle = this.page && this.page.title
             return this.customTitle || (pageTitle && this.$t(pageTitle)) || this.title || this.routeName
         },
         routeName() {
@@ -73,10 +73,10 @@ export default {
             return this.$t(getI18nKey(route.matched[route.matched.length - 1].path))
         },
         breadcrumb() {
-            let page = this.page
-            let breadcrumb = page && page.breadcrumb
+            const page = this.page
+            const breadcrumb = page && page.breadcrumb
             if (breadcrumb) {
-                let i18nBreadcrumb = []
+                const i18nBreadcrumb = []
                 breadcrumb.forEach(item => {
                     i18nBreadcrumb.push(this.$t(item))
                 })
@@ -92,13 +92,13 @@ export default {
     methods: {
         ...mapMutations('setting', ['correctPageMinHeight']),
         getRouteBreadcrumb() {
-            let routes = this.$route.matched
-            let breadcrumb = []
+            const routes = this.$route.matched
+            const breadcrumb = []
             routes.forEach(route => {
                 const path = route.path.length === 0 ? '/home' : route.path
                 breadcrumb.push(this.$t(getI18nKey(path)))
             })
-            let pageTitle = this.page && this.page.title
+            const pageTitle = this.page && this.page.title
             if (this.customTitle || pageTitle) {
                 breadcrumb[breadcrumb.length - 1] = this.customTitle || pageTitle
             }

@@ -10,7 +10,7 @@
             :table-attrs="{border:true}"
             @edit="edit"
         >
-            <template slot="left-handle">
+            <template #left-handle>
                 <a-button @click="TableReflash(1000)">
                     <a-icon type="plus" />刷新
                 </a-button>
@@ -18,7 +18,7 @@
                     <a-icon type="plus" />刷新
                 </a-button>
             </template>
-            <template slot="right-handle">
+            <template #right-handle>
                 <a-button @click="TableReflash(1000)">
                     <a-icon type="plus" />刷新
                 </a-button>
@@ -64,9 +64,9 @@ export default {
                 {
                     dataIndex: 'status', title: '操作', attr: { width: 500, },
                     formatF: row => <div>
-                        <a type="link" onClick={() => this.edit(row)} >  <a-icon type="delete" style="color:#F56C6C" />编辑</a>
-                        <a type="link" onClick={() => this.openDrawer(row)}>  <a-icon type="delete" style="color:#F56C6C" />打开弹框</a>
-                        <a type="link" onClick={() => this.handleTableRef(row)} >  <a-icon type="delete" style="color:#F56C6C" />打开Ref</a>
+                        <a type='link' onClick={() => this.edit(row)} >  <a-icon type='delete' style='color:#F56C6C' />编辑</a>
+                        <a type='link' onClick={() => this.openDrawer(row)}>  <a-icon type='delete' style='color:#F56C6C' />打开弹框</a>
+                        <a type='link' onClick={() => this.handleTableRef(row)} >  <a-icon type='delete' style='color:#F56C6C' />打开Ref</a>
                     </div>
                 },],
             drawer: false,

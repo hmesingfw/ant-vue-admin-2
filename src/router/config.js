@@ -11,11 +11,6 @@ const options = {
             component: () => import('@/pages/login')
         },
         {
-            path: '*',
-            name: '404',
-            component: () => import('@/pages/exception/404'),
-        },
-        {
             path: '/403',
             name: '403',
             component: () => import('@/pages/exception/403'),
@@ -104,6 +99,11 @@ const options = {
                     }
                 }
             ]
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: '404',
+            component: () => import('@/pages/exception/404'),
         },
     ]
 }
