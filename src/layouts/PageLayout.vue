@@ -66,11 +66,11 @@ export default {
         ...mapState('setting', ['layout', 'multiPage', 'pageMinHeight', 'pageWidth', 'customTitles']),
         pageTitle() {
             const pageTitle = this.page && this.page.title
-            return this.customTitle || (pageTitle && this.$t(pageTitle)) || this.title || this.routeName
+            return this.customTitle || pageTitle || this.title || this.routeName
         },
         routeName() {
             const route = this.$route
-            return this.$t(getI18nKey(route.matched[route.matched.length - 1].path))
+            return route.matched[route.matched.length - 1].name
         },
         breadcrumb() {
             const page = this.page
@@ -78,7 +78,7 @@ export default {
             if (breadcrumb) {
                 const i18nBreadcrumb = []
                 breadcrumb.forEach(item => {
-                    i18nBreadcrumb.push(this.$t(item))
+                    i18nBreadcrumb.push(item)
                 })
                 return i18nBreadcrumb
             } else {
@@ -95,8 +95,8 @@ export default {
             const routes = this.$route.matched
             const breadcrumb = []
             routes.forEach(route => {
-                const path = route.path.length === 0 ? '/home' : route.path
-                breadcrumb.push(this.$t(getI18nKey(path)))
+                const path = route.path.length === 0 ? '/home' : route.name
+                breadcrumb.push(path)
             })
             const pageTitle = this.page && this.page.title
             if (this.customTitle || pageTitle) {

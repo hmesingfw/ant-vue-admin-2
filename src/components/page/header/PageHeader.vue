@@ -17,13 +17,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div v-if="this.$slots.content" class="content">
+                        <div v-if="$slots.content" class="content">
                             <div v-if="avatar" class="avatar">
                                 <a-avatar :src="avatar" :size="72" />
                             </div>
                             <slot name="content"></slot>
                         </div>
-                        <div v-if="this.$slots.extra" class="extra">
+                        <div v-if="$slots.extra" class="extra">
                             <slot name="extra"></slot>
                         </div>
                     </div>

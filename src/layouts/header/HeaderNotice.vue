@@ -1,6 +1,6 @@
 <template>
     <a-dropdown :trigger="['click']" v-model="show">
-        <div slot="overlay">
+        <template #overlay>
             <a-spin :spinning="loading">
                 <a-tabs class="dropdown-tabs" :tab-bar-style="{textAlign: 'center'}" :style="{width: '297px'}">
                     <a-tab-pane tab="通知" key="1">
@@ -30,18 +30,20 @@
                     </a-tab-pane>
                 </a-tabs>
             </a-spin>
-        </div>
+        </template>
         <span @click="fetchNotice" class="header-notice">
             <a-badge class="notice-badge" count="12">
-                <a-icon :class="['header-notice-icon']" type="bell" />
+                <BellOutlined :class="['header-notice-icon']" />
             </a-badge>
         </span>
     </a-dropdown>
 </template>
 
 <script>
+import { BellOutlined } from '@ant-design/icons-vue';
 export default {
     name: 'HeaderNotice',
+    components: { BellOutlined },
     data() {
         return {
             loading: false,

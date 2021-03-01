@@ -11,10 +11,9 @@
                 <i-menu class="head-menu" :theme="headerTheme" mode="horizontal" :options="menuData" @select="onSelect" />
             </div>
             <div :class="['admin-header-right', headerTheme]">
-                <header-search class="header-item" @active="val => searchActive = val" />
                 <a-tooltip class="header-item" title="帮助文档" placement="bottom">
                     <a href="https://iczer.gitee.io/vue-antd-admin-docs/" target="_blank">
-                        <a-icon type="question-circle-o" />
+                        <QuestionCircleOutlined />
                     </a>
                 </a-tooltip>
                 <header-notice class="header-item" />
@@ -34,15 +33,14 @@
 </template>
 
 <script>
-import HeaderSearch from './HeaderSearch'
 import HeaderNotice from './HeaderNotice'
 import HeaderAvatar from './HeaderAvatar'
 import IMenu from '@/components/menu/menu'
 import { mapState, mapMutations } from 'vuex'
-
+import { QuestionCircleOutlined } from '@ant-design/icons-vue';
 export default {
     name: 'AdminHeader',
-    components: { IMenu, HeaderAvatar, HeaderNotice, HeaderSearch },
+    components: { IMenu, HeaderAvatar, HeaderNotice, QuestionCircleOutlined },
     props: ['collapsed', 'menuData'],
     data() {
         return {
@@ -51,7 +49,6 @@ export default {
                 { key: 'HK', name: '繁體中文', alias: '繁體' },
                 { key: 'US', name: 'English', alias: 'English' }
             ],
-            searchActive: false
         }
     },
     computed: {
@@ -67,13 +64,14 @@ export default {
             return lang.alias
         },
         menuWidth() {
-            const { layout, searchActive } = this
+            const { layout } = this
             const headWidth = layout === 'head' ? '100% - 188px' : '100%'
-            const extraWidth = searchActive ? '600px' : '400px'
+            const extraWidth = '400px'
             return `calc(${headWidth} - ${extraWidth})`
         }
     },
     methods: {
+
         toggleCollapse() {
             this.$emit('toggleCollapse')
         },

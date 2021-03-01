@@ -1,88 +1,88 @@
 <template>
     <div class="side-setting">
         <setting-item>
-            <a-button @click="saveSetting" type="primary" icon="save">{{ $t('save') }}</a-button>
-            <a-button @click="resetSetting" type="dashed" icon="redo" style="float: right">{{ $t('reset') }}</a-button>
+            <a-button @click="saveSetting" type="primary" icon="save">保存配置</a-button>
+            <a-button @click="resetSetting" type="dashed" icon="redo" style="float: right">重置配置</a-button>
         </setting-item>
-        <setting-item :title="$t('theme.title')">
+        <setting-item title="整体风格设置">
             <img-checkbox-group @change="values => setTheme({...theme, mode: values[0]})" :default-values="[theme.mode]">
-                <img-checkbox :title="$t('theme.dark')" img="https://gw.alipayobjects.com/zos/rmsportal/LCkqqYNmvBEbokSDscrm.svg" value="dark" />
-                <img-checkbox :title="$t('theme.light')" img="https://gw.alipayobjects.com/zos/rmsportal/jpRkZQMyYRryryPNtyIC.svg" value="light" />
-                <img-checkbox :title="$t('theme.night')" img="https://gw.alipayobjects.com/zos/antfincdn/hmKaLQvmY2/LCkqqYNmvBEbokSDscrm.svg" value="night" />
+                <img-checkbox title="亮色菜单风格" img="https://gw.alipayobjects.com/zos/rmsportal/LCkqqYNmvBEbokSDscrm.svg" value="dark" />
+                <img-checkbox title="暗色菜单风格" img="https://gw.alipayobjects.com/zos/rmsportal/jpRkZQMyYRryryPNtyIC.svg" value="light" />
+                <img-checkbox title="深夜模式" img="https://gw.alipayobjects.com/zos/antfincdn/hmKaLQvmY2/LCkqqYNmvBEbokSDscrm.svg" value="night" />
             </img-checkbox-group>
         </setting-item>
-        <setting-item :title="$t('theme.color')">
+        <setting-item title="主题色">
             <color-checkbox-group @change="(values, colors) => setTheme({...theme, color: colors[0]})" :default-values="[palettes.indexOf(theme.color)]" :multiple="false">
                 <color-checkbox v-for="(color, index) in palettes" :key="index" :color="color" :value="index" />
             </color-checkbox-group>
         </setting-item>
         <a-divider />
-        <setting-item :title="$t('navigate.title')">
+        <setting-item title="导航设置">
             <img-checkbox-group @change="values => setLayout(values[0])" :default-values="[layout]">
-                <img-checkbox :title="$t('navigate.side')" img="https://gw.alipayobjects.com/zos/rmsportal/JopDzEhOqwOjeNTXkoje.svg" value="side" />
-                <img-checkbox :title="$t('navigate.head')" img="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" value="head" />
-                <img-checkbox :title="$t('navigate.mix')" img="https://gw.alipayobjects.com/zos/antfincdn/x8Ob%26B8cy8/LCkqqYNmvBEbokSDscrm.svg" value="mix" />
+                <img-checkbox title="侧边导航" img="https://gw.alipayobjects.com/zos/rmsportal/JopDzEhOqwOjeNTXkoje.svg" value="side" />
+                <img-checkbox title="顶部导航" img="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" value="head" />
+                <img-checkbox title="混合导航" img="https://gw.alipayobjects.com/zos/antfincdn/x8Ob%26B8cy8/LCkqqYNmvBEbokSDscrm.svg" value="mix" />
             </img-checkbox-group>
         </setting-item>
         <setting-item>
             <a-list :split="false">
                 <a-list-item>
-                    {{ $t('navigate.content.title') }}
+                    内容区域宽度
                     <a-select :get-popup-container="getPopupContainer" :value="pageWidth" @change="setPageWidth" class="select-item" size="small">
-                        <a-select-option value="fluid">{{ $t('navigate.content.fluid') }}</a-select-option>
-                        <a-select-option value="fixed">{{ $t('navigate.content.fixed') }}</a-select-option>
+                        <a-select-option value="fluid">流式</a-select-option>
+                        <a-select-option value="fixed">定宽</a-select-option>
                     </a-select>
                 </a-list-item>
                 <a-list-item>
-                    {{ $t('navigate.fixedHeader') }}
+                    固定Header
                     <a-switch :checked="fixedHeader" size="small" @change="setFixedHeader" />
                 </a-list-item>
                 <a-list-item>
-                    {{ $t('navigate.fixedSideBar') }}
+                    固定侧边栏
                     <a-switch :checked="fixedSideBar" size="small" @change="setFixedSideBar" />
                 </a-list-item>
             </a-list>
         </setting-item>
         <a-divider />
-        <setting-item :title="$t('other.title')">
+        <setting-item title="其他设置">
             <a-list :split="false">
                 <a-list-item>
-                    {{ $t('other.weekMode') }}
+                    色弱模式
                     <a-switch :checked="weekMode" size="small" @change="setWeekMode" />
                 </a-list-item>
                 <a-list-item>
-                    {{ $t('other.multiPages') }}
+                    多页签模式
                     <a-switch :checked="multiPage" size="small" @change="setMultiPage" />
                 </a-list-item>
                 <a-list-item>
-                    {{ $t('other.hideSetting') }}
+                    隐藏设置抽屉
                     <a-switch :checked="hideSetting" size="small" @change="setHideSetting" />
                 </a-list-item>
             </a-list>
         </setting-item>
         <a-divider />
-        <setting-item :title="$t('animate.title')">
+        <setting-item title="页面切换动画">
             <a-list :split="false">
                 <a-list-item>
-                    {{ $t('animate.disable') }}
+                    禁用动画
                     <a-switch :checked="animate.disabled" size="small" @change="val => setAnimate({...animate, disabled: val})" />
                 </a-list-item>
                 <a-list-item>
-                    {{ $t('animate.effect') }}
+                    动画效果
                     <a-select :value="animate.name" :get-popup-container="getPopupContainer" @change="val => setAnimate({...animate, name: val})" class="select-item" size="small">
                         <a-select-option :key="index" :value="item.name" v-for="(item, index) in animates">{{ item.alias }}</a-select-option>
                     </a-select>
                 </a-list-item>
                 <a-list-item>
-                    {{ $t('animate.direction') }}
+                    动画方向
                     <a-select :value="animate.direction" :get-popup-container="getPopupContainer" @change="val => setAnimate({...animate, direction: val})" class="select-item" size="small">
                         <a-select-option :key="index" :value="item" v-for="(item, index) in directions">{{ item }}</a-select-option>
                     </a-select>
                 </a-list-item>
             </a-list>
         </setting-item>
-        <a-alert v-if="isDev" style="max-width: 240px; margin: -16px 0 8px; word-break: break-all" type="warning" :message="$t('alert')"></a-alert>
-        <a-button v-if="isDev" id="copyBtn" :data-clipboard-text="copyConfig" @click="copyCode" style="width: 100%" icon="copy">{{ $t('copy') }}</a-button>
+        <a-alert v-if="isDev" style="max-width: 240px; margin: -16px 0 8px; word-break: break-all" type="warning" message="拷贝配置后，直接覆盖文件 src/config/config.js 中的全部内容，然后重启即可。（注意：仅会拷贝与默认配置不同的项）"></a-alert>
+        <a-button v-if="isDev" id="copyBtn" :data-clipboard-text="copyConfig" @click="copyCode" style="width: 100%" icon="copy">拷贝配置</a-button>
     </div>
 </template>
 

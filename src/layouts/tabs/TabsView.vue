@@ -3,12 +3,13 @@
         <contextmenu v-if="false" :item-list="menuItemList" v-model:visible="menuVisible" @select="onMenuSelect" />
         <tabs-head v-if="multiPage" :active="activePage" :page-list="pageList" @change="changePage" @close="remove" @refresh="refresh" @contextmenu="onContextmenu" />
         <div :class="['tabs-view-content', layout, pageWidth]" :style="`margin-top: ${multiPage ? -24 : 0}px`">
-            <page-toggle-transition :disabled="animate.disabled" :animate="animate.name" :direction="animate.direction">
+            <!-- <page-toggle-transition :disabled="animate.disabled" :animate="animate.name" :direction="animate.direction">
                 <a-keep-alive :exclude-keys="excludeKeys" v-if="multiPage && cachePage" v-model="clearCaches">
                     <router-view v-if="!refreshing" ref="tabContent" :key="$route.fullPath" />
                 </a-keep-alive>
                 <router-view ref="tabContent" v-else-if="!refreshing" />
-            </page-toggle-transition>
+            </page-toggle-transition>-->
+            <router-view ref="tabContent" />
         </div>
     </admin-layout>
 </template>
@@ -18,7 +19,6 @@ import AdminLayout from '@/layouts/AdminLayout'
 import Contextmenu from '@/components/menu/Contextmenu'
 import PageToggleTransition from '@/components/transition/PageToggleTransition'
 import { mapState, mapMutations } from 'vuex'
-import { getI18nKey } from '@/utils/routerUtil'
 import AKeepAlive from '@/components/cache/AKeepAlive'
 import TabsHead from '@/layouts/tabs/TabsHead'
 
@@ -40,10 +40,10 @@ export default {
         ...mapState('setting', ['multiPage', 'cachePage', 'animate', 'layout', 'pageWidth']),
         menuItemList() {
             return [
-                { key: '1', icon: 'vertical-right', text: this.$t('closeLeft') },
-                { key: '2', icon: 'vertical-left', text: this.$t('closeRight') },
-                { key: '3', icon: 'close', text: this.$t('closeOthers') },
-                { key: '4', icon: 'sync', text: this.$t('refresh') },
+                { key: '1', icon: 'vertical-right', text: '关闭左侧' },
+                { key: '2', icon: 'vertical-left', text: '关闭右侧' },
+                { key: '3', icon: 'close', text: '关闭其它' },
+                { key: '4', icon: 'sync', text: '刷新页面' },
             ]
         },
         tabsOffset() {
@@ -109,7 +109,7 @@ export default {
         },
         remove(key, next) {
             if (this.pageList.length === 1) {
-                return this.$message.warning(this.$t('warn'))
+                return this.$message.warning('这是最后一页，不能再关闭了')
             }
             // 清除缓存
             let index = this.pageList.findIndex(item => item.fullPath === key)
@@ -201,7 +201,8 @@ export default {
             }, 200)
         },
         pageName(page) {
-            return this.$t(getI18nKey(page.keyPath))
+            console.log(page);
+            return page.keyPath
         },
         /**
          * 添加监听器

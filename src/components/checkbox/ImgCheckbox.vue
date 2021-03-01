@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { h } from 'vue'
 const Group = {
     name: 'ImgCheckboxGroup',
     props: {
@@ -64,7 +65,7 @@ const Group = {
             }
         }
     },
-    render(h) {
+    render() {
         return h(
             'div',
             {

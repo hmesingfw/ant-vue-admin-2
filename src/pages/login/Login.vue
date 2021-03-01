@@ -8,19 +8,19 @@
             <div class="desc">Ant Design 是西湖区最具影响力的 Web 设计规范</div>
         </div>
         <div class="login">
-            <a-form @submit="onSubmit" :form="form" :rules="rules">
+            <a-form @submit="onSubmit" :model="form" :rules="rules" ref="formRef">
                 <a-tabs size="large" :tab-bar-style="{textAlign: 'center'}" style="padding: 0 2px;">
                     <a-tab-pane tab="账户密码登录" key="1">
                         <a-alert type="error" :closable="true" v-show="error" :message="error" show-icon style="margin-bottom: 24px;" />
                         <a-form-item name="name">
-                            <a-input v-model="form.name" autocomplete="autocomplete" size="large" placeholder="admin" style="width:100%">
+                            <a-input v-model:value="form.name" size="large" placeholder="admin" style="width:100%">
                                 <template #prefix>
                                     <UserOutlined />
                                 </template>
                             </a-input>
                         </a-form-item>
                         <a-form-item name="password">
-                            <a-input size="large" v-model="form.password" placeholder="888888" autocomplete="autocomplete" type="password">
+                            <a-input size="large" v-model:value="form.password" placeholder="888888" type="password">
                                 <template #prefix>
                                     <LockOutlined />
                                 </template>
@@ -83,15 +83,15 @@ export default {
             logging: false,
             error: '',
             form: {
-                name: '',
-                password: '',
+                name: '1',
+                password: '1',
             },
             rules: {
                 name: [
                     { required: true, message: '请输入账户名', whitespace: true }
                 ],
                 password: [
-                    { required: true, message: '请输入账户名', whitespace: true }
+                    { required: true, message: '请输入密码', whitespace: true }
                 ],
             },
         }
@@ -103,10 +103,13 @@ export default {
     },
     methods: {
         ...mapMutations('account', ['setUser', 'setPermissions', 'setRoles']),
-        onSubmit(e) {
+        async onSubmit(e) {
             e.preventDefault()
-            this.form.validateFields((err) => {
-                if (!err) {
+
+            this.$refs.formRef.validateFields().then((result) => {
+                console.log('-----');
+                console.log(result);
+                if (!result) {
                     this.logging = true
                     const result = { data: {} };
                     result.data.permissions = [{ id: 'queryForm', operation: ['add', 'edit'] }]
@@ -118,7 +121,20 @@ export default {
                     result.data.expireAt = new Date(new Date().getTime() + 30 * 60 * 1000)
                     this.afterLogin(result);
                 }
+            }).catch((e) => {
+                console.log(e);
             })
+
+            this.logging = true
+            const result = { data: {} };
+            result.data.permissions = [{ id: 'queryForm', operation: ['add', 'edit'] }]
+            result.data.roles = [{ id: 'admin', operation: ['add', 'edit', 'delete'] }]
+            result.code = 0
+            result.message = '张三，欢迎回来'
+            result.data.user = { 'name': 'JACK', 'avatar': 'https://gw.alipayobjects.com/zos/rmsportal/gaOngJwsRYRaVAuXXcmB.png', 'address': '赣州市', 'position': { 'CN': '前端工程师 | 蚂蚁金服-计算服务事业群-VUE平台', 'HK': '前端工程師 | 螞蟻金服-計算服務事業群-VUE平台', 'US': 'Front-end engineer | Ant Financial - Computing services business group - VUE platform' } }
+            result.data.token = 'Authorization:' + Math.random()
+            result.data.expireAt = new Date(new Date().getTime() + 30 * 60 * 1000)
+            this.afterLogin(result);
         },
         afterLogin(res) {
             this.logging = false

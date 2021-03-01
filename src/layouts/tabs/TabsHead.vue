@@ -60,7 +60,7 @@ export default {
     computed: {
         ...mapState('setting', ['layout', 'pageWidth', 'fixedHeader', 'fixedTabs', 'customTitles']),
         lockTitle() {
-            return this.$t(this.fixedTabs ? 'unlock' : 'lock')
+            return this.fixedTabs ? '点击解除锁定' : '点击锁定页签头'
         }
     },
     methods: {
@@ -92,7 +92,7 @@ export default {
         pageName(page) {
             const pagePath = page.fullPath.split('?')[0]
             const custom = this.customTitles.find(item => item.path === pagePath)
-            return (custom && custom.title) || page.title || this.$t(getI18nKey(page.keyPath))
+            return (custom && custom.title) || page.title || page.keyPath
         }
     }
 }

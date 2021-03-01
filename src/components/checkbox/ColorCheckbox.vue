@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { h } from 'vue'
 const Group = {
     name: 'ColorCheckboxGroup',
     props: {
@@ -66,7 +67,7 @@ const Group = {
             }
         }
     },
-    render(h) {
+    render() {
         const clear = h('div', { attrs: { style: 'clear: both' } })
         return h(
             'div',

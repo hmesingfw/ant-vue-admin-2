@@ -3,9 +3,10 @@
         <div v-if="extraImage && !isMobile" class="extraImg">
             <img :src="extraImage" />
         </div>
-        <page-toggle-transition :disabled="animate.disabled" :animate="animate.name" :direction="animate.direction">
+        <!-- <page-toggle-transition :disabled="animate.disabled" :animate="animate.name" :direction="animate.direction">
             <router-view ref="page" />
-        </page-toggle-transition>
+        </page-toggle-transition>-->
+        <router-view ref="page" />
     </page-layout>
 </template>
 

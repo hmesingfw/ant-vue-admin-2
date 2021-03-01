@@ -31,6 +31,7 @@
  *   }
  * }
  **/
+import { h } from 'vue'
 import Menu from 'ant-design-vue/es/menu'
 import Icon from 'ant-design-vue/es/icon'
 import fastEqual from 'fast-deep-equal'
@@ -80,13 +81,13 @@ export default {
         if (this.options.length > 0 && !this.options[0].fullPath) {
             this.formatOptions(this.options, '')
         }
-        // 自定义国际化配置
-        if (this.i18n && this.i18n.messages) {
-            const messages = this.i18n.messages
-            Object.keys(messages).forEach(key => {
-                this.$i18n.mergeLocaleMessage(key, messages[key])
-            })
-        }
+        // // 自定义国际化配置
+        // if (this.i18n && this.i18n.messages) {
+        //     const messages = this.i18n.messages
+        //     Object.keys(messages).forEach(key => {
+        //         this.$i18n.mergeLocaleMessage(key, messages[key])
+        //     })
+        // }
     },
     watch: {
         options(val) {
@@ -114,13 +115,13 @@ export default {
             this.updateMenu()
         },
         sOpenKeys(val) {
-            this.$emit('openChange', val)
-            this.$emit('update:openKeys', val)
+            // this.$emit('openChange', val)
+            // this.$emit('update:openKeys', val)
         }
     },
     methods: {
         renderIcon: function (h, icon, key) {
-            if (this.$scopedSlots.icon && icon && icon !== 'none') {
+            if (1 == 2 && icon && icon !== 'none') {
                 const vnodes = this.$scopedSlots.icon({ icon, key })
                 vnodes.forEach(vnode => {
                     vnode.data.class = vnode.data.class ? vnode.data.class : []
@@ -138,31 +139,43 @@ export default {
                 config = { attrs: { style: 'overflow:hidden;white-space:normal;text-overflow:clip;', href: menu.meta.link, target: '_blank' } }
             }
             return h(
-                Item, { key: menu.fullPath },
-                [
-                    h(tag, config,
-                        [
-                            this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
-                            this.$t(getI18nKey(menu.fullPath))
-                        ]
-                    )
-                ]
+                Item,
+                { key: menu.fullPath },
+                {
+                    default: () => [
+                        h(tag,
+                            config,
+                            {
+                                default: () => [
+                                    this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
+                                    menu.name,
+                                ]
+                            }
+                        )
+                    ]
+                }
             )
         },
         renderSubMenu: function (h, menu) {
             const this_ = this
             const subItem = [h('span', { slot: 'title', attrs: { style: 'overflow:hidden;white-space:normal;text-overflow:clip;' } },
-                [
-                    this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
-                    this.$t(getI18nKey(menu.fullPath))
-                ]
+                {
+                    default: () =>
+                        [
+                            this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
+                            menu.name
+                        ]
+                }
             )]
             const itemArr = []
             menu.children.forEach(function (item) {
                 itemArr.push(this_.renderItem(h, item))
             })
             return h(SubMenu, { key: menu.fullPath },
-                subItem.concat(itemArr)
+                {
+                    default: () => subItem.concat(itemArr)
+                }
+
             )
         },
         renderItem: function (h, menu) {
@@ -212,7 +225,7 @@ export default {
             return route.matched.map(item => item.path)
         }
     },
-    render(h) {
+    render() {
         return h(
             Menu,
             {
@@ -231,7 +244,7 @@ export default {
                         this.$emit('select', obj)
                     }
                 }
-            }, this.renderMenu(h, this.options)
+            }, { default: () => this.renderMenu(h, this.options) }
         )
     }
 }
