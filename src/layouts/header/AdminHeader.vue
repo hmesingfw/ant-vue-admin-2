@@ -6,7 +6,9 @@
                 <h1 v-if="!isMobile">{{ systemName }}</h1>
             </router-link>
             <a-divider v-if="isMobile" type="vertical" />
-            <a-icon v-if="layout !== 'head'" class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="toggleCollapse" />
+            <!-- <a-icon v-if="layout !== 'head'" class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="toggleCollapse" /> -->
+            <MenuUnfoldOutlined v-if="layout !== 'head'" class="trigger" @click="toggleCollapse" />
+            <MenuFoldOutlined v-else class="trigger" @click="toggleCollapse" />
             <div v-if="layout !== 'side' && !isMobile" class="admin-header-menu" :style="`width: ${menuWidth};`">
                 <i-menu class="head-menu" :theme="headerTheme" mode="horizontal" :options="menuData" @select="onSelect" />
             </div>
@@ -20,12 +22,14 @@
                 <header-avatar class="header-item" />
                 <a-dropdown class="lang header-item">
                     <div>
-                        <a-icon type="global" />
+                        <GlobalOutlined />
                         {{ langAlias }}
                     </div>
-                    <a-menu @click="val => setLang(val.key)" :selected-keys="[lang]">
-                        <a-menu-item v-for=" lang in langList" :key="lang.key">{{ lang.key.toLowerCase() + ' ' + lang.name }}</a-menu-item>
-                    </a-menu>
+                    <template #overlay>
+                        <a-menu @click="val => setLang(val.key)" :selected-keys="[lang]">
+                            <a-menu-item v-for=" lang in langList" :key="lang.key">{{ lang.key.toLowerCase() + ' ' + lang.name }}</a-menu-item>
+                        </a-menu>
+                    </template>
                 </a-dropdown>
             </div>
         </div>
@@ -37,10 +41,10 @@ import HeaderNotice from './HeaderNotice'
 import HeaderAvatar from './HeaderAvatar'
 import IMenu from '@/components/menu/menu'
 import { mapState, mapMutations } from 'vuex'
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { QuestionCircleOutlined, GlobalOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
 export default {
     name: 'AdminHeader',
-    components: { IMenu, HeaderAvatar, HeaderNotice, QuestionCircleOutlined },
+    components: { IMenu, HeaderAvatar, HeaderNotice, QuestionCircleOutlined, GlobalOutlined, MenuFoldOutlined, MenuUnfoldOutlined },
     props: ['collapsed', 'menuData'],
     data() {
         return {
@@ -70,6 +74,7 @@ export default {
             return `calc(${headWidth} - ${extraWidth})`
         }
     },
+    emits: ['toggleCollapse'],
     methods: {
 
         toggleCollapse() {

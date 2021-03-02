@@ -1,5 +1,5 @@
 <template>
-    <a-layout-sider :theme="sideTheme" :class="['side-menu', 'beauty-scroll', isMobile ? null : 'shadow']" width="256px" :collapsible="collapsible" :value="collapsed" :trigger="null">
+    <a-layout-sider :theme="sideTheme" :class="['side-menu', 'beauty-scroll', isMobile ? null : 'shadow']" width="256px" :inline-collapsed="collapsible" :collapsed="collapsed" :trigger="null">
         <div :class="['logo', theme]">
             <router-link to="/dashboard/workplace">
                 <img src="@/assets/img/logo.png" />
@@ -43,6 +43,7 @@ export default {
         },
         ...mapState('setting', ['isMobile', 'systemName'])
     },
+    emits: ['menuSelect'],
     methods: {
         onSelect(obj) {
             this.$emit('menuSelect', obj)

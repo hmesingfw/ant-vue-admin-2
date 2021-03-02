@@ -12,10 +12,13 @@
             :collapsible="true"
         />
         <div v-if="fixedSideBar && !isMobile" :style="`width: ${sideMenuWidth}; min-width: ${sideMenuWidth};max-width: ${sideMenuWidth};`" class="virtual-side"></div>
-        <drawer v-if="!hideSetting" v-model="showSetting" placement="right">
-            <div class="setting">
-                <a-icon :type="showSetting ? 'close' : 'setting'" />
-            </div>
+        <drawer v-if="!hideSetting" :value="showSetting" placement="right">
+            <template #handler>
+                <div class="setting" @click="showSetting = !showSetting">
+                    <CloseOutlined v-if="showSetting" />
+                    <SettingOutlined v-else />
+                </div>
+            </template>
             <setting />
         </drawer>
         <a-layout class="admin-layout-main beauty-scroll">
@@ -46,12 +49,13 @@ import Drawer from '../components/tool/Drawer'
 import SideMenu from '../components/menu/SideMenu'
 import Setting from '../components/setting/Setting'
 import { mapState, mapMutations, mapGetters } from 'vuex'
+import { SettingOutlined, CloseOutlined } from '@ant-design/icons-vue';
 
 // const minHeight = window.innerHeight - 64 - 122
 
 export default {
     name: 'AdminLayout',
-    components: { Setting, SideMenu, Drawer, PageFooter, AdminHeader },
+    components: { Setting, SideMenu, Drawer, PageFooter, AdminHeader, SettingOutlined, CloseOutlined },
     data() {
         return {
             minHeight: window.innerHeight - 64 - 122,

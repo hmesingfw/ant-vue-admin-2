@@ -33,9 +33,9 @@
  **/
 import { h } from 'vue'
 import Menu from 'ant-design-vue/es/menu'
-import Icon from 'ant-design-vue/es/icon'
+// import Icon from 'ant-design-vue/es/icon'
 import fastEqual from 'fast-deep-equal'
-import { getI18nKey } from '@/utils/routerUtil'
+import { AppstoreAddOutlined } from '@ant-design/icons-vue';
 
 const { Item, SubMenu } = Menu
 
@@ -64,6 +64,7 @@ export default {
         i18n: Object,
         openKeys: Array
     },
+    components: { AppstoreAddOutlined },
     data() {
         return {
             selectedKeys: [],
@@ -89,6 +90,7 @@ export default {
         //     })
         // }
     },
+    emits: ['openChange', 'update:openKeys', 'select'],
     watch: {
         options(val) {
             if (val.length > 0 && !val[0].fullPath) {
@@ -115,70 +117,40 @@ export default {
             this.updateMenu()
         },
         sOpenKeys(val) {
-            // this.$emit('openChange', val)
-            // this.$emit('update:openKeys', val)
+            this.$emit('openChange', val)
+            this.$emit('update:openKeys', val)
         }
     },
     methods: {
-        renderIcon: function (h, icon, key) {
-            if (1 == 2 && icon && icon !== 'none') {
-                const vnodes = this.$scopedSlots.icon({ icon, key })
-                vnodes.forEach(vnode => {
-                    vnode.data.class = vnode.data.class ? vnode.data.class : []
-                    vnode.data.class.push('anticon')
-                })
-                return vnodes
-            }
-            return !icon || icon == 'none' ? null : h(Icon, { props: { type: icon } })
+        renderIcon() {
+            return <AppstoreAddOutlined />
         },
         renderMenuItem: function (h, menu) {
-            let tag = 'router-link'
-            let config = { props: { to: menu.fullPath }, attrs: { style: 'overflow:hidden;white-space:normal;text-overflow:clip;' } }
+            let tag;
             if (menu.meta && menu.meta.link) {
-                tag = 'a'
-                config = { attrs: { style: 'overflow:hidden;white-space:normal;text-overflow:clip;', href: menu.meta.link, target: '_blank' } }
+                tag = <a style='overflow:hidden;white-space:normal;text-overflow:clip;' href={menu.meta.link} target='_blank' >{this.renderIcon()} {menu.name}</a>
+            } else {
+                tag = <router-link to={menu.fullPath} style='overflow:hidden;white-space:normal;text-overflow:clip;'> {this.renderIcon()} {menu.name}</router-link>
             }
-            return h(
-                Item,
-                { key: menu.fullPath },
-                {
-                    default: () => [
-                        h(tag,
-                            config,
-                            {
-                                default: () => [
-                                    this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
-                                    menu.name,
-                                ]
-                            }
-                        )
-                    ]
-                }
-            )
+            return <Item key={menu.fullPath}>
+                {tag}
+            </Item>
         },
         renderSubMenu: function (h, menu) {
             const this_ = this
-            const subItem = [h('span', { slot: 'title', attrs: { style: 'overflow:hidden;white-space:normal;text-overflow:clip;' } },
-                {
-                    default: () =>
-                        [
-                            this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
-                            menu.name
-                        ]
-                }
-            )]
+            const subItem = <span style='overflow:hidden;white-space:normal;text-overflow:clip;'>{this.renderIcon()} {menu.name}</span>
             const itemArr = []
             menu.children.forEach(function (item) {
                 itemArr.push(this_.renderItem(h, item))
             })
-            return h(SubMenu, { key: menu.fullPath },
-                {
-                    default: () => subItem.concat(itemArr)
-                }
-
-            )
+            return <SubMenu key={menu.fullPath}>
+                {{
+                    default: () => itemArr,
+                    title: () => subItem,
+                }}
+            </SubMenu>
         },
-        renderItem: function (h, menu) {
+        renderItem(h, menu) {
             const meta = menu.meta
             if (!meta || !meta.invisible) {
                 let renderChildren = false
@@ -199,8 +171,9 @@ export default {
             const this_ = this
             const menuArr = []
             menuTree.forEach(function (menu, i) {
-                menuArr.push(this_.renderItem(h, menu, '0', i))
+                menuArr.push(this_.renderItem(h, menu))
             })
+            console.log(menuArr);
             return menuArr
         },
         formatOptions(options, parentPath) {
@@ -223,28 +196,16 @@ export default {
         },
         getSelectedKey(route) {
             return route.matched.map(item => item.path)
-        }
+        },
+        menuClick(obj) {
+            obj.selectedKeys = [obj.key]
+            this.$emit('select', obj)
+        },
     },
     render() {
-        return h(
-            Menu,
-            {
-                props: {
-                    theme: this.menuTheme,
-                    mode: this.$props.mode,
-                    selectedKeys: this.selectedKeys,
-                    openKeys: this.openKeys ? this.openKeys : this.sOpenKeys
-                },
-                on: {
-                    'update:openKeys': (val) => {
-                        this.sOpenKeys = val
-                    },
-                    click: (obj) => {
-                        obj.selectedKeys = [obj.key]
-                        this.$emit('select', obj)
-                    }
-                }
-            }, { default: () => this.renderMenu(h, this.options) }
-        )
+        return <Menu theme={this.menuTheme} mode={this.$props.mode} selectedKeys={this.selectedKeys} openKeys={this.openKeys ? this.openKeys : this.sOpenKeys} onClick={obj => this.menuClick(obj)}>
+            {this.renderMenu(h, this.options)}
+        </Menu>
     }
 }
+// v-models={[[this.selectedKeys, 'selectedKeys'],]}

@@ -4,21 +4,23 @@
             <a-avatar class="avatar" size="small" shape="circle" :src="user.avatar" />
             <span class="name">{{ user.name }}, {{ time.h }}好！</span>
         </div>
-        <a-menu :class="['avatar-menu']">
-            <a-menu-item>
-                <a-icon type="user" />
-                <span>个人中心</span>
-            </a-menu-item>
-            <a-menu-item>
-                <a-icon type="setting" />
-                <span>设置</span>
-            </a-menu-item>
-            <a-menu-divider />
-            <a-menu-item @click="logout">
-                <a-icon style="margin-right: 8px;" type="poweroff" />
-                <span>退出登录</span>
-            </a-menu-item>
-        </a-menu>
+        <template #overlay>
+            <a-menu :class="['avatar-menu']">
+                <a-menu-item>
+                    <a-icon type="user" />
+                    <span>个人中心</span>
+                </a-menu-item>
+                <a-menu-item>
+                    <a-icon type="setting" />
+                    <span>设置</span>
+                </a-menu-item>
+                <a-menu-divider />
+                <a-menu-item @click="logout">
+                    <a-icon style="margin-right: 8px;" type="poweroff" />
+                    <span>退出登录</span>
+                </a-menu-item>
+            </a-menu>
+        </template>
     </a-dropdown>
 </template>
 

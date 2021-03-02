@@ -8,7 +8,7 @@
             <div class="desc">Ant Design 是西湖区最具影响力的 Web 设计规范</div>
         </div>
         <div class="login">
-            <a-form @submit="onSubmit" :model="form" :rules="rules" ref="formRef">
+            <a-form @submit="onSubmit" :model="form" :rules="rules" ref="formRef" :wrapper-col="{span:24}">
                 <a-tabs size="large" :tab-bar-style="{textAlign: 'center'}" style="padding: 0 2px;">
                     <a-tab-pane tab="账户密码登录" key="1">
                         <a-alert type="error" :closable="true" v-show="error" :message="error" show-icon style="margin-bottom: 24px;" />

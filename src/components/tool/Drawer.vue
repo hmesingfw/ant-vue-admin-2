@@ -1,14 +1,15 @@
 <template>
     <div>
-        <div :class="['mask', visible ? 'open' : 'close']" @click="close"></div>
-        <div :class="['drawer', placement, visible ? 'open' : 'close']">
+        <div :class="['mask', value ? 'open' : 'close']" @click="close"></div>
+        <div :class="['drawer', placement, value ? 'open' : 'close']">
             <div ref="drawer" class="content beauty-scroll">
                 <slot></slot>
             </div>
-            <div v-if="showHandler" :class="['handler-container', placement, visible ? 'open' : 'close']" ref="handler" @click="toggle">
+            <div v-if="showHandler" :class="['handler-container', placement, value ? 'open' : 'close']" ref="handler" @click="toggle">
                 <slot v-if="$slots.handler" name="handler"></slot>
                 <div v-else class="handler">
-                    <a-icon :type="visible ? 'close' : 'bars'" />
+                    <CloseOutlined v-if="value" />
+                    <BarsOutlined v-else />
                 </div>
             </div>
         </div>
@@ -16,8 +17,12 @@
 </template>
 
 <script>
+import { CloseOutlined, BarsOutlined } from '@ant-design/icons-vue';
+
 export default {
     name: 'Drawer',
+    components: { CloseOutlined, BarsOutlined, },
+
     data() {
         return {
         }
@@ -27,7 +32,7 @@ export default {
         event: 'change'
     },
     props: {
-        visible: {
+        value: {
             type: Boolean,
             required: false,
             default: false
@@ -43,6 +48,12 @@ export default {
             default: true
         }
     },
+    watch: {
+        value(val) {
+            console.log(val);
+        }
+    },
+    emits: ['change',],
     methods: {
         open() {
             this.$emit('change', true)
@@ -51,7 +62,7 @@ export default {
             this.$emit('change', false)
         },
         toggle() {
-            this.$emit('change', !this.visible)
+            this.$emit('change', !this.value)
         }
     }
 }

@@ -1,8 +1,16 @@
 <template>
     <div class="side-setting">
         <setting-item>
-            <a-button @click="saveSetting" type="primary" icon="save">保存配置</a-button>
-            <a-button @click="resetSetting" type="dashed" icon="redo" style="float: right">重置配置</a-button>
+            <a-button @click="saveSetting" type="primary">
+                <template #icon>
+                    <SaveOutlined />
+                </template>保存配置
+            </a-button>
+            <a-button @click="resetSetting" type="dashed" style="float: right">
+                <template #icon>
+                    <RedoOutlined />
+                </template>重置配置
+            </a-button>
         </setting-item>
         <setting-item title="整体风格设置">
             <img-checkbox-group @change="values => setTheme({...theme, mode: values[0]})" :default-values="[theme.mode]">
@@ -88,7 +96,7 @@
 
 <script>
 import SettingItem from './SettingItem'
-import { ColorCheckbox, ImgCheckbox } from '@/components/checkbox'
+import { ColorCheckbox, ImgCheckbox, ImgCheckboxGroup, ColorCheckboxGroup } from '@/components/checkbox'
 import Clipboard from 'clipboard'
 import { mapState, mapMutations } from 'vuex'
 import { formatConfig } from '@/utils/formatter'
@@ -96,13 +104,12 @@ import { setting } from '@/config/default'
 import sysConfig from '@/config/config'
 import fastEqual from 'fast-deep-equal'
 import deepMerge from 'deepmerge'
+import { SaveOutlined, RedoOutlined } from '@ant-design/icons-vue';
 
-const ColorCheckboxGroup = ColorCheckbox.Group
-const ImgCheckboxGroup = ImgCheckbox.Group
 export default {
     name: 'Setting',
     i18n: require('./i18n'),
-    components: { ImgCheckboxGroup, ImgCheckbox, ColorCheckboxGroup, ColorCheckbox, SettingItem },
+    components: { ImgCheckboxGroup, ImgCheckbox, ColorCheckboxGroup, ColorCheckbox, SettingItem, SaveOutlined, RedoOutlined },
     data() {
         return {
             copyConfig: 'Sorry, you have copied nothing O(∩_∩)O~',
@@ -119,6 +126,9 @@ export default {
         'animate.name': function (val) {
             this.setAnimate({ name: val, direction: this.directions[0] })
         }
+    },
+    mounted() {
+        console.log(this.theme);
     },
     methods: {
         getPopupContainer() {
@@ -177,6 +187,7 @@ export default {
 
 <style lang="less" scoped>
 .side-setting {
+    width: 300px;
     min-height: 100%;
     background-color: @base-bg-color;
     padding: 24px;

@@ -3,82 +3,18 @@
         <div class="img-check-box" @click="toggle">
             <img :src="img" />
             <div v-if="sChecked" class="check-item">
-                <a-icon type="check" />
+                <CheckOutlined />
             </div>
         </div>
     </a-tooltip>
 </template>
 
 <script>
-import { h } from 'vue'
-const Group = {
-    name: 'ImgCheckboxGroup',
-    props: {
-        multiple: {
-            type: Boolean,
-            required: false,
-            default: false
-        },
-        defaultValues: {
-            type: Array,
-            required: false,
-            default: () => []
-        }
-    },
-    data() {
-        return {
-            values: [],
-            options: []
-        }
-    },
-    provide() {
-        return {
-            groupContext: this
-        }
-    },
-    watch: {
-        'values': function (value) {
-            this.$emit('change', value)
-            // // 此条件是为解决单选时，触发两次chang事件问题
-            // if (!(newVal.length === 1 && oldVal.length === 1 && newVal[0] === oldVal[0])) {
-            //   this.$emit('change', this.values)
-            // }
-        }
-    },
-    methods: {
-        handleChange(option) {
-            if (!option.checked) {
-                if (this.values.indexOf(option.value) > -1) {
-                    this.values = this.values.filter(item => item != option.value)
-                }
-            } else {
-                if (!this.multiple) {
-                    this.values = [option.value]
-                    this.options.forEach(item => {
-                        if (item.value != option.value) {
-                            item.sChecked = false
-                        }
-                    })
-                } else {
-                    this.values.push(option.value)
-                }
-            }
-        }
-    },
-    render() {
-        return h(
-            'div',
-            {
-                attrs: { style: 'display: flex' }
-            },
-            [this.$slots.default]
-        )
-    }
-}
+import { CheckOutlined } from '@ant-design/icons-vue';
 
 export default {
     name: 'ImgCheckbox',
-    Group,
+    components: { CheckOutlined },
     props: {
         checked: {
             type: Boolean,
