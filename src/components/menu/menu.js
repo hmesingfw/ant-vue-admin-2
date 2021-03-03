@@ -62,14 +62,15 @@ export default {
             default: false
         },
         i18n: Object,
-        openKeys: Array
+        // openKeys: Array
     },
     components: { AppstoreAddOutlined },
     data() {
         return {
             selectedKeys: [],
             sOpenKeys: [],
-            cachedOpenKeys: []
+            cachedOpenKeys: [],
+            openKeys: [],
         }
     },
     computed: {
@@ -136,9 +137,10 @@ export default {
                 {tag}
             </Item>
         },
+
         renderSubMenu: function (h, menu) {
             const this_ = this
-            const subItem = <span style='overflow:hidden;white-space:normal;text-overflow:clip;'>{this.renderIcon()} {menu.name}</span>
+            const subItem = <span style='overflow:hidden;white-space:normal;text-overflow:clip;'>{this.renderIcon()} <span>{menu.name}</span></span>
             const itemArr = []
             menu.children.forEach(function (item) {
                 itemArr.push(this_.renderItem(h, item))
@@ -146,7 +148,7 @@ export default {
             return <SubMenu key={menu.fullPath}>
                 {{
                     default: () => itemArr,
-                    title: () => subItem,
+                    title: () => subItem
                 }}
             </SubMenu>
         },
@@ -173,7 +175,6 @@ export default {
             menuTree.forEach(function (menu, i) {
                 menuArr.push(this_.renderItem(h, menu))
             })
-            console.log(menuArr);
             return menuArr
         },
         formatOptions(options, parentPath) {
@@ -198,13 +199,16 @@ export default {
             return route.matched.map(item => item.path)
         },
         menuClick(obj) {
+            console.log(obj);
             obj.selectedKeys = [obj.key]
             this.$emit('select', obj)
         },
     },
     render() {
-        return <Menu theme={this.menuTheme} mode={this.$props.mode} selectedKeys={this.selectedKeys} openKeys={this.openKeys ? this.openKeys : this.sOpenKeys} onClick={obj => this.menuClick(obj)}>
-            {this.renderMenu(h, this.options)}
+        return <Menu theme={this.menuTheme} mode={this.$props.mode} selectedKeys={this.selectedKeys} onClick={obj => this.menuClick(obj)}>
+            {{
+                default: () => this.renderMenu(h, this.options),
+            }}
         </Menu>
     }
 }
